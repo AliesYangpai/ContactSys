@@ -1,7 +1,97 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 #include <iostream>
+#include <string>
+#define MAX_CAPACITY_OF_CONTACTS_BOOK 1000
 using namespace std;
 
+
+struct Person
+{
+	string name;
+	short age;
+	string  gender;
+	string phone;
+	string address;
+};
+
+struct ContactsBook 
+{
+	struct Person personArr[MAX_CAPACITY_OF_CONTACTS_BOOK];
+	short current_size = 0; // 当前的人数列表数量
+};
+
+
+// 添加联系人
+void addContact(ContactsBook * p_cb) 
+{
+	if (p_cb->current_size == MAX_CAPACITY_OF_CONTACTS_BOOK)
+	{
+		cout << "通讯录人数已满" << endl;
+		return;
+	}
+	cout << "请输入姓名：" << endl;
+	string name;
+	cin >> name;
+	p_cb->personArr[p_cb->current_size].name = name;
+	
+	cout << "请输入性别：" << endl;
+	cout << "1--男" << endl;
+	cout << "2--女" << endl;
+	short sex;
+	while (true) 
+	{
+		cin >> sex;
+		if (sex == 1) 
+		{
+			p_cb->personArr[p_cb->current_size].gender = "男";
+			break;
+		}
+		if (sex == 2) 
+		{
+			p_cb->personArr[p_cb->current_size].gender = "男";
+			break;
+		}
+		cout << "输入错误，请重新输入性别：" << endl;
+		cout << "1--男" << endl;
+		cout << "2--女" << endl;
+
+	}
+
+	cout << "请输入年龄：" << endl;
+	short age;
+	cin >> age;
+	p_cb->personArr[p_cb->current_size].age = age;
+
+
+	cout << "请输入电话号码：" << endl;
+	string phone;
+	cin >> phone;
+	p_cb->personArr[p_cb->current_size].phone = phone;
+
+	cout << "请输入地址：" << endl;
+	string adr;
+	cin >> adr;
+	p_cb->personArr[p_cb->current_size].address = adr;
+	p_cb->current_size++;
+	cout << "~~添加成功：" << endl;
+	system("pause"); // 按任意键继续 
+	system("cls"); // 清屏操作
+}
+
+void showAllContacts(ContactsBook* p_cb) {
+	if (p_cb->current_size == 0)
+	{
+		cout << " 暂无联系人" << endl;
+		return;
+	}
+
+	for (int i = 0; i < p_cb->current_size; i++)
+	{
+	 Person person =p_cb->personArr[i];
+	 cout << person.name << " " << person.gender << " " << person.age << " " << person.phone << " " << person.address << endl;
+	}
+
+}
 
 void showMenu()  {
 
@@ -16,7 +106,7 @@ void showMenu()  {
 	cout << "*************************" << endl;
 }
 
-void showSys()
+void showSys(ContactsBook* p_cb)
 {
 	short select = -1;
 	do
@@ -25,9 +115,11 @@ void showSys()
 		cin >> select;
 		switch (select)
 		{
-		case 1:  // 1、添加联系他
+		case 1:  // 1、添加联系人
+			addContact(p_cb);
 			break;
 		case 2:  // 2、显示联系人
+			showAllContacts(p_cb);
 			break;
 		case 3:  // 3、删除联系人
 			break;
@@ -47,6 +139,7 @@ void showSys()
 
 int main() 
 {
-	showSys();
+	ContactsBook cb;
+	showSys(&cb);
 	return 0;
 }
